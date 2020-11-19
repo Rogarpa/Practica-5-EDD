@@ -111,8 +111,6 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
             if(v == null) return -1;
             
             return 1 + Math.max(v.altura(v.izquierdo), v.altura(v.derecho));
-            
-            
         }
         
         /**
