@@ -208,7 +208,7 @@ public class ArbolRojinegro<T extends Comparable<T>>
         //3
         else if(!(esRojo((VerticeRojinegro)encontrado))) balanceoElimina((VerticeRojinegro)hijastro);
         //2 no necesario
-        //else if(esRojo((VerticeRojinegro)encontrado)) System.out.println("esrojo");
+        
 
         if(hijastro.elemento == null){
             if(hijastro.padre == null) raiz = null;

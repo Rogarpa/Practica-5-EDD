@@ -104,6 +104,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
         * @return la altura del vértice.
         */
         @Override public int altura() {
+            
             return altura(this);
         }
         
@@ -111,6 +112,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
             if(v == null) return -1;
             
             return 1 + Math.max(v.altura(v.izquierdo), v.altura(v.derecho));
+            
         }
         
         /**
@@ -329,7 +331,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
         int altura = altura();
         boolean[] a = new boolean[altura + 1];
 
-        for(int i = 0; i < altura + 1; i++ ) a[i] = false;
+        //for(int i = 0; i < altura + 1; i++ ) a[i] = false;
         return toString(raiz, 0, a);
     }
     
@@ -342,10 +344,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
         }
         
         return s;
-        
     }
-    
-    
     
     private String toString(Vertice v, int l, boolean[] a){
         String s = v.toString() + "\n";
@@ -393,6 +392,4 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
                 }
             }
             
-            //derecho ( "›" o "»" ). Antes de esto habrá símbolos para representar las ramas
-    //( "└" , "│" , "├" , "─" ) o espacios ( "⊔" ).
     

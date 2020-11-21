@@ -38,8 +38,8 @@ public class ArbolAVL<T extends Comparable<T>>
          * @return una representación en cadena del vértice AVL.
          */
         @Override public String toString() {
-            int alturaIzquierdo = 0;
-            int alturaDerecho = 0;
+            int alturaIzquierdo = -1;
+            int alturaDerecho = -1;
             if(izquierdo != null) alturaIzquierdo = izquierdo.altura();
             if(derecho != null) alturaDerecho = derecho.altura();
 
@@ -110,43 +110,88 @@ public class ArbolAVL<T extends Comparable<T>>
         VerticeArbolBinario<T> encontrado = busca(elemento);
         if(encontrado == null) return;
 
-        encontrado = (VerticeArbolBinario)(intercambiaEliminable((Vertice)encontrado));
+        if(encontrado.izquierdo() != null && encontrado.derecho() != null)
+            encontrado = (VerticeArbolBinario)(intercambiaEliminable((Vertice)encontrado));
+        
         eliminaVertice((Vertice)encontrado);
         //FALLO CON DESCONEXIÓN DE ELIMINAVERTICE
         rebalanceo((VerticeAVL)(encontrado.padre()));
     }
 
     private void rebalanceo(VerticeAVL v){
-        
         if(v == null) return;
+
+        v.altura = alturaVertice(v);
+        System.out.println("seteo" + v +"altura" + v);
         
-        v.altura = super.altura();
         int balance = balanceVertice(v);
-        VerticeAVL p,q;
-        
+        VerticeAVL p,q,x,y,aux;
+        int H = v.altura;
+
         p = (VerticeAVL)v.izquierdo;
         q = (VerticeAVL)v.derecho;
-        //arreglar altura -1
+
 
         
         if(balance == -2){
+            x = (VerticeAVL)q.izquierdo;
+            y = (VerticeAVL)q.derecho;
+
             //caso cuando p es vacio (-1)
             if(balanceVertice(q) == 1) {
                 super.giraDerecha(q);
+                q.altura--;
+                x.altura++;
+                
+                q = (VerticeAVL)v.derecho;
+                x = (VerticeAVL)q.izquierdo;
+                y = (VerticeAVL)q.derecho; 
             }
+            super.giraIzquierda(v);
             
-            giraIzquierda(v);
+            if(x != null && x.altura == H - 2) v.altura = H - 1;
+            else v.altura = H - 2;
+
+            if(v.altura == H - 1) q.altura = H;
+            else q.altura = H - 1;
+
         }
 
         if(balance == 2){
+            x = (VerticeAVL)p.izquierdo;
+            y = (VerticeAVL)p.derecho;
             //caso cuando p es vacio (-1)
             if(balanceVertice(p) == -1) {
                 super.giraIzquierda(p);
+                q.altura--;
+                y.altura++;
+                
+                p = (VerticeAVL)v.izquierdo;
+                x = (VerticeAVL)p.izquierdo;
+                y = (VerticeAVL)p.derecho; 
             }
+            super.giraDerecha(v);
             
-            giraIzquierda(v);
+            if(y != null && y.altura == H - 2) v.altura = H - 1;
+            else v.altura = H - 2;
+
+            if(v.altura == H - 1) p.altura = H;
+            else p.altura = H - 1;
+
         }
 
+        rebalanceo((VerticeAVL)v.padre);
+    }
+
+
+    private int alturaVertice(VerticeAVL v){
+        int alturaHijoIzquierdo, alturaHijoDerecho;
+        alturaHijoIzquierdo = -1;
+        alturaHijoDerecho = -1;
+        if(v.izquierdo != null) alturaHijoIzquierdo = v.izquierdo.altura();
+        if(v.derecho != null) alturaHijoDerecho = v.derecho.altura();
+        
+        return 1 + Math.max(alturaHijoIzquierdo, alturaHijoDerecho);
     }
 
     private int balanceVertice(VerticeAVL v){
