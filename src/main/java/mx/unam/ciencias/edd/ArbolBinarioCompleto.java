@@ -32,7 +32,7 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
         /* Regresa el siguiente elemento en orden BFS. */
         @Override public T next() {
             
-            if(cola.esVacia()) throw new NoSuchElementException();
+            if(cola.esVacia()) throw new NoSuchElementException("No puedes iterar un Arbol Binario Completo sin elementos siguientes");
             if(cola.mira().izquierdo != null) cola.mete(cola.mira().izquierdo);
             if(cola.mira().derecho != null) cola.mete(cola.mira().derecho);
             

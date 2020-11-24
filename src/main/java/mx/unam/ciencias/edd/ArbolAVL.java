@@ -122,7 +122,6 @@ public class ArbolAVL<T extends Comparable<T>>
         if(v == null) return;
 
         v.altura = alturaVertice(v);
-        System.out.println("seteo" + v +"altura" + v);
         
         int balance = balanceVertice(v);
         VerticeAVL p,q,x,y,aux;
@@ -163,7 +162,7 @@ public class ArbolAVL<T extends Comparable<T>>
             //caso cuando p es vacio (-1)
             if(balanceVertice(p) == -1) {
                 super.giraIzquierda(p);
-                q.altura--;
+                p.altura--;
                 y.altura++;
                 
                 p = (VerticeAVL)v.izquierdo;
