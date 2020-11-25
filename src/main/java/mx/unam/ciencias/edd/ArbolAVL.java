@@ -107,15 +107,16 @@ public class ArbolAVL<T extends Comparable<T>>
      */
     @Override public void elimina(T elemento) {
         //puerco con casting
-        VerticeArbolBinario<T> encontrado = busca(elemento);
+        Vertice encontrado = (Vertice)(busca(elemento));
         if(encontrado == null) return;
 
-        if(encontrado.izquierdo() != null && encontrado.derecho() != null)
-            encontrado = (VerticeArbolBinario)(intercambiaEliminable((Vertice)encontrado));
+        elementos--;
+        if(encontrado.izquierdo != null && encontrado.derecho != null)
+            encontrado = intercambiaEliminable(encontrado);
         
-        eliminaVertice((Vertice)encontrado);
-        //FALLO CON DESCONEXIÓN DE ELIMINAVERTICE
-        rebalanceo((VerticeAVL)(encontrado.padre()));
+        eliminaVertice(encontrado);
+        
+        rebalanceo((VerticeAVL)(encontrado.padre));
     }
 
     private void rebalanceo(VerticeAVL v){
@@ -124,7 +125,6 @@ public class ArbolAVL<T extends Comparable<T>>
         v.altura = alturaVertice(v);
         
         int balance = balanceVertice(v);
-        System.out.println(balance);
         VerticeAVL p,q,x,y,aux;
         int H = v.altura;
 
@@ -134,12 +134,11 @@ public class ArbolAVL<T extends Comparable<T>>
 
         
         if(balance == -2){
-            System.out.println("caso1 sobre" + v);
             x = (VerticeAVL)q.izquierdo;
             y = (VerticeAVL)q.derecho;
 
             //caso cuando p es vacio (-1)
-            if(q.altura == 1) {
+            if(balanceVertice(q) == 1) {
                 super.giraDerecha(q);
                 q.altura--;
                 if(x != null)x.altura++;
@@ -162,7 +161,7 @@ public class ArbolAVL<T extends Comparable<T>>
             x = (VerticeAVL)p.izquierdo;
             y = (VerticeAVL)p.derecho;
             //caso cuando p es vacio (-1)
-            if(p.altura == -1) {
+            if(balanceVertice(p) == -1) {
                 super.giraIzquierda(p);
                 p.altura--;
                 if(y != null) y.altura++;
